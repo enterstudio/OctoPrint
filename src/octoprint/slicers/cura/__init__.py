@@ -68,7 +68,7 @@ class Cura(object):
 
 		executable = self.cura_path
 		(workingDir, ignored) = os.path.split(executable)
-		args = [executable, '-i', config, '-s', file_path, '-o',  gcode]
+		args = ['"%s"' % executable, '-v', '-p', '-o', '"%s"' % gcode, '"%s"' % file_path]
 
 		thread = threading.Thread(target=start_thread, args=(call_back,
 			call_back_args, args, workingDir))

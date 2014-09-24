@@ -115,6 +115,7 @@ function GcodeFilesViewModel(printerStateViewModel, loginStateViewModel) {
             url: API_BASEURL + "files",
             method: "GET",
             dataType: "json",
+            data: "filter=gcode",
             success: function(response) {
                 self.fromResponse(response, filenameToFocus, locationToFocus);
                 self._otherRequestInProgress = false;

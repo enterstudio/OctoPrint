@@ -407,6 +407,7 @@ class MachineCom(object):
 			else:
 				self._sendNext()
 		except:
+			self._logger.exception("Error while trying to start printing")
 			self._errorValue = getExceptionString()
 			self._changeState(self.STATE_ERROR)
 			eventManager().fire(Events.ERROR, {"error": self.getErrorString()})

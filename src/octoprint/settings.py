@@ -49,8 +49,8 @@ default_settings = {
 		},
 		"uploads": {
 			"maxSize":  1 * 1024 * 1024 * 1024, # 1GB
-			"nameSuffix": ".name",
-			"pathSuffix": ".path"
+			"nameSuffix": "name",
+			"pathSuffix": "path"
 		},
 		"maxSize": 100 * 1024, # 100 KB
 	},
@@ -92,7 +92,8 @@ default_settings = {
 		"logs": None,
 		"virtualSd": None,
 		"watched": None,
-		"plugins": None
+		"plugins": None,
+		"slicingProfiles": None
 	},
 	"temperature": {
 		"profiles":
@@ -115,7 +116,7 @@ default_settings = {
 			{"x": 0.0, "y": 0.0}
 		],
 		"bedDimensions": {
-			"x": 200.0, "y": 200.0, "r": 100
+			"x": 200.0, "y": 200.0, "r": 100, "circular": False
 		},
 		"defaultExtrusionLength": 5
 	},

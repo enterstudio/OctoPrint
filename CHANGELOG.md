@@ -28,7 +28,6 @@
 * Start counting the layers at 1 instead of 0 in the GCODE viewer
 * Upgraded [Font Awesome](https://fortawesome.github.io/Font-Awesome/) to version 3.2.1
 * Better error reporting for timelapse rendering and system commands
-* Supports
 * Custom control can now be defined so that they show a Confirm dialog with configurable text before executing 
   ([#532](https://github.com/foosel/OctoPrint/issues/532) and [#590](https://github.com/foosel/OctoPrint/pull/590))
 

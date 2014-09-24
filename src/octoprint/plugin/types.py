@@ -67,3 +67,23 @@ class EventHandlerPlugin(Plugin):
 		pass
 
 
+class SlicerPlugin(Plugin):
+	def get_slicer_type(self):
+		pass
+
+	def get_slicer_profile_options(self):
+		pass
+
+	def get_slicer_profile(self, path):
+		pass
+
+	def get_slicer_default_profile(self):
+		pass
+
+	def save_slicer_profile(self, path, profile, allow_overwrite=True, overrides=None):
+		pass
+
+	def do_slice(self, model_path, machinecode_path=None, profile_path=None):
+		pass
+
+

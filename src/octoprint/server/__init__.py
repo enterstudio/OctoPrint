@@ -27,7 +27,9 @@ babel = Babel(app)
 debug = False
 
 printer = None
-gcodeManager = None
+fileManager = None
+slicingManager = None
+analysisQueue = None
 userManager = None
 eventManager = None
 loginManager = None
@@ -47,6 +49,9 @@ import octoprint.plugin
 import octoprint.timelapse
 import octoprint._version
 import octoprint.util
+import octoprint.filemanager.storage
+import octoprint.filemanager.analysis
+import octoprint.slicing
 
 from . import util
 
@@ -180,7 +185,9 @@ class Server():
 			self._checkForRoot()
 
 		global printer
-		global gcodeManager
+		global fileManager
+		global slicingManager
+		global analysisQueue
 		global userManager
 		global eventManager
 		global loginManager
@@ -194,6 +201,7 @@ class Server():
 
 		# first initialize the settings singleton and make sure it uses given configfile and basedir if available
 		self._initSettings(self._configfile, self._basedir)
+		pluginManager = octoprint.plugin.plugin_manager(init=True)
 
 		# then initialize logging
 		self._initLogging(self._debug, self._logConf)
@@ -203,8 +211,10 @@ class Server():
 
 		eventManager = events.eventManager()
 		gcodeManager = gcodefiles.GcodeManager()
-		printer = Printer(gcodeManager)
-		pluginManager = octoprint.plugin.plugin_manager(init=True)
+		analysisQueue = octoprint.filemanager.analysis.AnalysisQueue()
+		slicingManager = octoprint.slicing.SlicingManager(settings().getBaseFolder("slicingProfiles"))
+		fileManager = octoprint.filemanager.FileManager(analysisQueue, slicingManager)
+		printer = Printer(fileManager, analysisQueue)
 
 		# configure additional template folders for jinja2
 		template_plugins = pluginManager.get_implementations(octoprint.plugin.TemplatePlugin)
@@ -342,8 +352,8 @@ class Server():
 			logger.exception("Stacktrace follows:")
 
 	def _createSocketConnection(self, session):
-		global printer, gcodeManager, userManager, eventManager
-		return util.sockjs.PrinterStateConnection(printer, gcodeManager, userManager, eventManager, session)
+		global printer, fileManager, analysisQueue, userManager, eventManager
+		return util.sockjs.PrinterStateConnection(printer, fileManager, analysisQueue, userManager, eventManager, session)
 
 	def _checkForRoot(self):
 		if "geteuid" in dir(os) and os.geteuid() == 0:
